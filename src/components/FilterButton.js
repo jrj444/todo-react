@@ -1,9 +1,14 @@
 import React from 'react';
 
-export default function FilterButton() {
+export default function FilterButton(props) {
   return (
-    <button type="button" className="btn toggle-btn" aria-pressed="true">
-      <span>All</span>
+    <button
+      type="button"
+      className="btn toggle-btn"
+      aria-pressed={props.isPressed}
+      onClick={() => props.setFilter(props.name)}
+    >
+      <span>{props.name}</span>
     </button>
   );
 }
