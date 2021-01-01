@@ -1,52 +1,58 @@
+import React, {useState} from "react";
+import {nanoid} from "nanoid";
 import Todo from './components/Todo';
+import Form from './components/Form';
+import FilterButton from './components/FilterButton';
 
 function App(props) {
-  const taskList = props.tasks.map(task =>
+  const [tasks, setTasks] = useState(props.tasks);
+
+  const addTask = (name) => {
+    const newTask = {id: "todo-" + nanoid(), name: name, completed: false};
+    setTasks([...tasks, newTask]);
+  };
+
+  const toggleTaskCompleted = (id) => {
+    const updatedTasks = tasks.map(task => {
+      if (id === task.id) {
+        return {...task, completed: !task.completed};
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+  };
+
+  const deleteTask = (id) => {
+    const remainingTasks = tasks.filter(task => id !== task.id);
+    setTasks(remainingTasks);
+  };
+
+  const taskList = tasks.map(task =>
     <Todo
       id={task.id}
       name={task.name}
       completed={task.completed}
       key={task.id}
+      toggleTaskCompleted={toggleTaskCompleted}
+      deleteTask={deleteTask}
     />
   );
+
+  const headingText = `共 ${taskList.length} 个任务`;
 
   return (
     <div className="todoapp stack-large">
       <h1>待办清单</h1>
-      <form>
-        <h2 className="label-wrapper">
-          <label htmlFor="new-todo-input" className="label_lg">
-            需要做些什么？
-          </label>
-        </h2>
-        <input
-          type="text"
-          id="new-todo-input"
-          className="input input_lg"
-          name="text"
-          autoComplete="off"
-        />
-        <button type="submit" className="btn btn_primary btn_lg">
-          添加任务
-        </button>
-      </form>
+      <Form addTask={addTask}/>
       <div className="filters btn-group stack-exception">
-        <button type="button" className="btn toggle-btn" aria-pressed="true">
-          <span>All</span>
-        </button>
-        <button type="button" className="btn toggle-btn" aria-pressed="false">
-          <span>Active</span>
-        </button>
-        <button type="button" className="btn toggle-btn" aria-pressed="false">
-          <span>Completed</span>
-        </button>
+        <FilterButton/>
+        <FilterButton/>
+        <FilterButton/>
       </div>
       <h2 id="list-heading">
-        3 tasks remaining
+        {headingText}
       </h2>
-      <ul
-        className="todo-list stack-large stack-exception"
-      >
+      <ul className="todo-list stack-large stack-exception">
         {taskList}
       </ul>
     </div>
