@@ -5,12 +5,13 @@ import Form from './components/Form';
 import FilterButton from './components/FilterButton';
 
 const FILTER_MAP = {
-  All: () => true,
-  Active: task => !task.completed,
-  Completed: task => task.completed
+  'All': () => true,
+  'Active': task => !task.completed,
+  'Completed': task => task.completed
 };
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
+console.log(FILTER_NAMES);
 
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks);

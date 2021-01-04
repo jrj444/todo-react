@@ -20,7 +20,7 @@ export default function Todo(props) {
     <form className="stack-small" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="todo-label" htmlFor={props.id}>
-          New name for {props.name}
+          （{props.name}）需要改名为：
         </label>
         <input
           id={props.id}
